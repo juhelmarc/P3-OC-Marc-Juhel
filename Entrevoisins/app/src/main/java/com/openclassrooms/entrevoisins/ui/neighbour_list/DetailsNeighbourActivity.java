@@ -83,27 +83,19 @@ public class DetailsNeighbourActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast toast;
                 //On bloque l'ajout aux favoris à (taille list Neighbour - 1)
-                if (!isNeighbourFavorite &&  sizeNeighbourList > sizeFavoriteList + 1) {
+                if (!isNeighbourFavorite) {
                     toast = Toast.makeText( getApplicationContext(), neighbour.getName() + " Favorite = YES !", Toast.LENGTH_SHORT );
                     mApiService.switchNeighbourTypeFavorite( neighbour, false );
                     isNeighbourFavorite = true;
-                }
-                else if (isNeighbourFavorite) {
+                } else {
                     toast = Toast.makeText( getApplicationContext(), neighbour.getName() + " Favorite = NO !", Toast.LENGTH_SHORT );
                     mApiService.switchNeighbourTypeFavorite( neighbour, true );
                     isNeighbourFavorite = false;
                 }
-                else if (!isNeighbourFavorite &&  sizeNeighbourList == sizeFavoriteList + 1) {
-                    toast = Toast.makeText( getApplicationContext(), "You have already " + sizeFavoriteList + " Favorite and " + sizeNeighbourList + " Neighbours.", Toast.LENGTH_SHORT );
-                }
-                else {
-                    toast = Toast.makeText( getApplicationContext(), "BUG", Toast.LENGTH_SHORT );
-                }
-
                 toast.show();
                 setFavoriteButton( isNeighbourFavorite );
-                }
-            } );
+            }
+        } );
     }
 
     public void setNeighbour(Neighbour neighbour) {
