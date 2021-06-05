@@ -1,0 +1,134 @@
+package com.openclassrooms.entrevoisins.ui.neighbour_list;
+
+import android.support.design.widget.Snackbar;
+import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.openclassrooms.entrevoisins.R;
+import com.openclassrooms.entrevoisins.di.DI;
+import com.openclassrooms.entrevoisins.events.DeleteFavoriteEvent;
+import com.openclassrooms.entrevoisins.events.DeleteNeighbourEvent;
+import com.openclassrooms.entrevoisins.events.ProfileNeighbourEvent;
+import com.openclassrooms.entrevoisins.model.Neighbour;
+import com.openclassrooms.entrevoisins.service.NeighbourApiService;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnItemClick;
+
+public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeighbourRecyclerViewAdapter.ViewHolder> {
+
+    private final List<Neighbour> mNeighbours;
+    private NeighbourApiService mApiService;
+
+    private int sizeFavoriteList;
+    private int sizeNeighbourList;
+
+
+
+
+    public MyNeighbourRecyclerViewAdapter(List<Neighbour> items) {
+        mNeighbours = items;
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.fragment_neighbour, parent, false);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        Neighbour neighbour = mNeighbours.get(position);
+        holder.mNeighbourName.setText(neighbour.getName());
+        Glide.with(holder.mNeighbourAvatar.getContext())
+                .load(neighbour.getAvatarUrl())
+                .apply(RequestOptions.circleCropTransform())
+                .into(holder.mNeighbourAvatar);
+        mApiService = DI.getNeighbourApiService();
+        //changement de couleur pour l'image supprimé si favorite 
+        if (neighbour.isFavorite()) {
+            holder.mDeleteButton.setImageResource( R.drawable.ic_delete_gold_24dp );
+        }
+        else {
+            holder.mDeleteButton.setImageResource( R.drawable.ic_delete_white_24dp );
+        }
+        sizeFavoriteList = mApiService.getFavoriteNeighbours().size();
+        sizeNeighbourList = mApiService.getNeighbours().size();
+
+
+        holder.mDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (sizeFavoriteList == getItemCount() && sizeNeighbourList > getItemCount()) {
+                    EventBus.getDefault().post( new DeleteFavoriteEvent( neighbour ) );
+                }
+                else if (neighbour.isFavorite() && sizeFavoriteList < getItemCount() ) {
+                    Snackbar snackbar = Snackbar.make( v, neighbour.getName() + "  is Favorite, remove any way ? ", Snackbar.LENGTH_LONG );
+                    snackbar.show();
+                    snackbar.setAction( "YES", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            EventBus.getDefault().post( new DeleteNeighbourEvent( neighbour ) );
+                            snackbar.setText( neighbour.getName() + " has been remove" );
+                        }
+                    } );
+                }
+                else if (!neighbour.isFavorite() && sizeFavoriteList >= sizeNeighbourList + 1) {
+                    Snackbar snackbar = Snackbar.make( v,"You cant remove, you have too much Favorite", Snackbar.LENGTH_LONG );
+                    snackbar.show();
+                }
+                else {
+                    EventBus.getDefault().post( new DeleteNeighbourEvent( neighbour ) );
+                }
+            }
+        });
+
+
+
+        holder.itemView.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(new ProfileNeighbourEvent(neighbour));
+            }
+        });
+
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return mNeighbours.size();
+    }
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.item_list_avatar)
+        public ImageView mNeighbourAvatar;
+        @BindView(R.id.item_list_name)
+        public TextView mNeighbourName;
+        @BindView(R.id.item_list_delete_button)
+        public ImageButton mDeleteButton;
+
+        public ViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+
+        }
+    }
+}
