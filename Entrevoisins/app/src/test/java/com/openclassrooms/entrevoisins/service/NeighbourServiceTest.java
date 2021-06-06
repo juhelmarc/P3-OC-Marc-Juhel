@@ -47,4 +47,5 @@ public class NeighbourServiceTest {
         List<Neighbour> expectedFavoriteNeighbours  = DummyNeighbourGenerator.DUMMY_NEIGHBOURS;
         assertThat(favoriteNeighbours , IsIterableContainingInAnyOrder.containsInAnyOrder(expectedFavoriteNeighbours .toArray()));
     }
+    // Test switch méthode
 }

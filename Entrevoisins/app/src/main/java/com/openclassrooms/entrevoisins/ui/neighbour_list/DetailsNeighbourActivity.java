@@ -45,8 +45,7 @@ public class DetailsNeighbourActivity extends AppCompatActivity {
 
     private NeighbourApiService mApiService;
     private Boolean isNeighbourFavorite;
-    private int sizeFavoriteList;
-    private int sizeNeighbourList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,15 +64,10 @@ public class DetailsNeighbourActivity extends AppCompatActivity {
         isNeighbourFavorite = neighbour.isFavorite();
         setFavoriteButton( isNeighbourFavorite );
 
-        sizeFavoriteList = mApiService.getFavoriteNeighbours().size();
-        sizeNeighbourList = mApiService.getNeighbours().size();
-
         mBackButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent( v.getContext(), ListNeighbourActivity.class );
                 finish();
-                v.getContext().startActivity( intent );
 
             }
         } );
@@ -84,6 +78,7 @@ public class DetailsNeighbourActivity extends AppCompatActivity {
                 Toast toast;
                 //On bloque l'ajout aux favoris à (taille list Neighbour - 1)
                 if (!isNeighbourFavorite) {
+                    //quand violet = champ de classe
                     toast = Toast.makeText( getApplicationContext(), neighbour.getName() + " Favorite = YES !", Toast.LENGTH_SHORT );
                     mApiService.switchNeighbourTypeFavorite( neighbour, false );
                     isNeighbourFavorite = true;
@@ -128,7 +123,7 @@ public class DetailsNeighbourActivity extends AppCompatActivity {
             mFavoriteButton.setImageResource( R.drawable.ic_star_gold_24dp );
         }
         else {
-            mFavoriteButton.setImageResource( R.drawable.ic_star_white_24dp );
+            mFavoriteButton.setImageResource( R.drawable.ic_star_border_white_24dp );
         }
     }
 
