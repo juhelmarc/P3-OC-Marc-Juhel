@@ -76,15 +76,15 @@ public class DetailsNeighbourActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast toast;
-                //On bloque l'ajout aux favoris à (taille list Neighbour - 1)
+
                 if (!isNeighbourFavorite) {
                     //quand violet = champ de classe
                     toast = Toast.makeText( getApplicationContext(), neighbour.getName() + " Favorite = YES !", Toast.LENGTH_SHORT );
-                    mApiService.switchNeighbourTypeFavorite( neighbour, false );
+                    mApiService.switchFavorite( neighbour, false );
                     isNeighbourFavorite = true;
                 } else {
                     toast = Toast.makeText( getApplicationContext(), neighbour.getName() + " Favorite = NO !", Toast.LENGTH_SHORT );
-                    mApiService.switchNeighbourTypeFavorite( neighbour, true );
+                    mApiService.switchFavorite( neighbour, true );
                     isNeighbourFavorite = false;
                 }
                 toast.show();

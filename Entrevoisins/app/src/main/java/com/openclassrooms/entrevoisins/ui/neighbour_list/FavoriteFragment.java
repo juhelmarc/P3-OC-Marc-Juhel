@@ -70,8 +70,7 @@ public class FavoriteFragment extends Fragment {
         return view;
     }
     private void initList() {
-        // TODO Supprimer
-        mApiService.getNeighbours();
+
         mFavorite = mApiService.getFavoriteNeighbours();
         mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mFavorite));
     }
@@ -93,6 +92,16 @@ public class FavoriteFragment extends Fragment {
         super.onStop();
         EventBus.getDefault().unregister(this);
 
+    }
+    //si je retire l'event ci-dessous l'appli plante au démarrage
+    /**
+     * Fired if the user clicks on a delete button
+     * @param event
+     */
+    @Subscribe
+    public void onDeleteNeighbour(DeleteNeighbourEvent event) {
+        mApiService.deleteNeighbour(event.neighbour);
+        initList();
     }
 
 

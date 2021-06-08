@@ -1,5 +1,8 @@
 package com.openclassrooms.entrevoisins.service;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import com.openclassrooms.entrevoisins.model.Neighbour;
 
 import java.util.ArrayList;
@@ -46,7 +49,7 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
      */
     @Override
     public List<Neighbour> getFavoriteNeighbours() {
-        //Clean the list before get it //
+
         List<Neighbour> favoriteNeighbours = new ArrayList<>();
         //Pour chaque élement de la liste neighbours, nous allons vérrifier si favorite == true avec la méthode isFavorite() si il l'est il sera ajouté à la liste favoriteNeighbour avec la méthode .add
         for (Neighbour neighbour : neighbours) {
@@ -59,14 +62,18 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
     }
     //verifier que l'index n'est pas égal à -1 (mettre une sécurité)
     @Override
-    public void switchNeighbourTypeFavorite(Neighbour neighbour, boolean isFavorite) {
+    public void switchFavorite(Neighbour neighbour, boolean isFavorite) {
 
-        //isFavorite = neighbour.isFavorite();
-        if (!isFavorite) {
-            neighbours.get(index).setFavorite( true );
+        int index = neighbours.indexOf(neighbour);
+        if(index == -1) {
+
         }
         else {
-            neighbours.get(index).setFavorite( false );
+            if (!isFavorite) {
+                neighbours.get( index ).setFavorite( true );
+            } else {
+                neighbours.get( index ).setFavorite( false );
+            }
         }
         // Si je remplace neighbours.get(index).setFavorite(true) par neighbour.setFavorite(true) ça ne marche pas
         // réponse ? : modification d'un objet d'une liste, mais pas de la liste contenant l'objet
