@@ -12,8 +12,10 @@ import org.junit.runners.JUnit4;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit test on Neighbour service
@@ -26,14 +28,16 @@ public class NeighbourServiceTest {
     @Before
     public void setup() {
         service = DI.getNewInstanceApiService();
+        service.switchFavorite(service.getNeighbours().get(0), false );
+        service.switchFavorite(service.getNeighbours().get(1), false );
+
     }
 
-    @Before
+   /*** @Before
     public void setFavorite() {
-        service.getNeighbours().get(0).setFavorite( true );
-        service.getNeighbours().get(1).setFavorite( true );
-    }
 
+    }
+*/
     @Test
     public void getNeighboursWithSuccess() {
         List<Neighbour> neighbours = service.getNeighbours();
@@ -50,39 +54,61 @@ public class NeighbourServiceTest {
     //Test favoriteNeighbour
     @Test
     public void getFavoritesWithSuccess() {
+        //utiliser la méthode switchfavorite
+        //Neighbour neighbour0 = service.getNeighbours().get(0);
+        //Neighbour neighbour1 = service.getNeighbours().get(1);
+
         List<Neighbour> favoriteNeighbours = service.getFavoriteNeighbours();
         List<Neighbour> expectedFavoriteNeighbours  = Arrays.asList(  service.getNeighbours().get(0), service.getNeighbours().get(1));
-        assertThat(favoriteNeighbours , IsIterableContainingInAnyOrder.containsInAnyOrder(expectedFavoriteNeighbours .toArray()));
+        assertThat(favoriteNeighbours , IsIterableContainingInAnyOrder.containsInAnyOrder(expectedFavoriteNeighbours.toArray()));
+        assertEquals( favoriteNeighbours.size(), 2 );
     }
 
     // Test switch méthode
     @Test
-    public void switchFavoriteWithSuccess() {
-        Neighbour neighbourToSwitch = service.getNeighbours().get(0);
-        //on stock le résultat dans isFavorite
-        Boolean isFavorite = neighbourToSwitch.isFavorite();
-        //- 1
-        service.switchFavorite( neighbourToSwitch, isFavorite);
-        Boolean isFavoriteAfterSwitch = neighbourToSwitch.isFavorite();
-        //test if result = false donc (isFavorite != isFavoriteAfterSwitch)
-        //- 1.1
-        assertFalse(isFavorite == isFavoriteAfterSwitch);
-        //- 1.2
-        Neighbour neighbourToTest = service.getNeighbours().get(0);
-        Boolean isFavoriteTest = neighbourToTest.isFavorite();
-        assertFalse( isFavoriteTest != isFavoriteAfterSwitch );
+    public void switchUnFavoriteWithSuccess() {
+        //service.getNeighbours().get(0).setFavorite( true );
+        //service.getNeighbours().get(1).setFavorite( true );
 
-        //- 2
-        service.switchFavorite( neighbourToSwitch , isFavoriteAfterSwitch );
+        assertTrue( service.getNeighbours().get(0).isFavorite() );
+        assertTrue( service.getNeighbours().get(1).isFavorite() );
+        Neighbour neighbourToSwitchUnFavorite = service.getNeighbours().get(0);
+        service.switchFavorite( neighbourToSwitchUnFavorite , true );
+        assertFalse(neighbourToSwitchUnFavorite.isFavorite());
         //on valorise isFavoriteAfterSwitch avec la nouvelle valeur de neighbourToSwitch.isFvorite()
-        isFavoriteAfterSwitch = neighbourToSwitch.isFavorite();
+        //isFavoriteAfterSwitch = neighbourToSwitch.isFavorite();
         // after switch isFavorite should be equal to isFavoriteAfterSwitch donc (isFavorite == isFavoriteAfterSwitch) la méthode switchFavorite fonctionne donc bien
         // car la valeur du boolean neighbourToSwitch.isFavorite passe bien de vrai à faux à chaque fois qu'on fait appel à la méthode sur l'objet neighbourToSwitch
         //- 2.1
-        assertFalse( isFavorite != isFavoriteAfterSwitch );
-        //- 2.2
-        Neighbour neighbourToTest2 = service.getNeighbours().get(0);
-        Boolean isFavoriteTest2 = neighbourToTest2.isFavorite();
-        assertFalse( isFavoriteTest2 != isFavoriteAfterSwitch );
+        //assertTrue( isFavorite == isFavoriteAfterSwitch );
+        assertEquals( service.getFavoriteNeighbours().size(), 1);
+        /**- 2.2
+         Neighbour neighbourToTest2 = service.getNeighbours().get(0);
+         Boolean isFavoriteTest2 = neighbourToTest2.isFavorite();
+         assertTrue( isFavoriteTest2 == isFavoriteAfterSwitch );
+         */
+        //todo : tester la méthode createneighbour
     }
+    @Test
+    public void switchFavoriteWithSuccess() {
+
+        Neighbour neighbourToSwitchFavorite = service.getNeighbours().get( 2 );
+        assertFalse( neighbourToSwitchFavorite.isFavorite() );
+        assertTrue( service.getNeighbours().get(1).isFavorite() );
+        //- 1
+        service.switchFavorite( neighbourToSwitchFavorite, false );
+
+        //test if result = false donc (isFavorite != isFavoriteAfterSwitch)
+        //- 1.1
+        assertTrue( neighbourToSwitchFavorite.isFavorite() );
+        assertEquals( service.getFavoriteNeighbours().size(), 3 );
+    }
+        /**- 1.2
+        Neighbour neighbourToTest = service.getNeighbours().get(0);
+        Boolean isFavoriteTest = neighbourToTest.isFavorite();
+        assertTrue( isFavoriteTest == isFavoriteAfterSwitch );
+        */
+        //- 2
+        // créer un nouveau test pour le switch to unfavorite
+
 }

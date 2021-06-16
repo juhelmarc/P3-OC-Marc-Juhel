@@ -63,18 +63,13 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
     //verifier que l'index n'est pas égal à -1 (mettre une sécurité)
     @Override
     public void switchFavorite(Neighbour neighbour, boolean isFavorite) {
-
+        //
+        //neighbour.setFavorite( isFavorite );
         int index = neighbours.indexOf(neighbour);
-        if(index == -1) {
+        if(index >= 0 && index < neighbours.size()) {
+                neighbours.get( index ).setFavorite( !isFavorite );
+        }
 
-        }
-        else {
-            if (!isFavorite) {
-                neighbours.get( index ).setFavorite( true );
-            } else {
-                neighbours.get( index ).setFavorite( false );
-            }
-        }
         // Si je remplace neighbours.get(index).setFavorite(true) par neighbour.setFavorite(true) ça ne marche pas
         // réponse ? : modification d'un objet d'une liste, mais pas de la liste contenant l'objet
         // alors qu'avec neighbours.get... nous modifions directement la liste
