@@ -24,6 +24,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Collections;
+
 import javax.xml.transform.stream.StreamSource;
 
 import static android.support.test.espresso.Espresso.closeSoftKeyboard;
@@ -42,10 +44,13 @@ import static android.support.test.espresso.matcher.ViewMatchers.withContentDesc
 import static android.support.test.espresso.matcher.ViewMatchers.withHint;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withResourceName;
+import static android.support.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.bumptech.glide.GenericTransitionOptions.with;
 import static com.openclassrooms.entrevoisins.utils.RecyclerViewItemCountAssertion.withItemCount;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.stringContainsInOrder;
 import static org.hamcrest.core.IsNull.notNullValue;
 
 
@@ -92,7 +97,7 @@ public class NeighboursListTest {
         onView( withId(R.id.list_neighbours)).check(withItemCount(ITEMS_COUNT + 1));
         // When perform a click on a delete icon
         onView( withId(R.id.list_neighbours))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(1, new DeleteViewAction()));
+                .perform(RecyclerViewActions.actionOnItemAtPosition(5, new DeleteViewAction()));
         // Then : the number of element is 11
         onView( withId(R.id.list_neighbours)).check(withItemCount(ITEMS_COUNT));
     }
@@ -105,17 +110,14 @@ public class NeighboursListTest {
         // When perform a click on item
         onView( withId( R.id.list_neighbours ) )
                 .perform( RecyclerViewActions.actionOnItemAtPosition( 2, new ProfileViewAction() ) );
-        //onView(ViewMatchers.withId(R.id.profile_name)).check( (ViewAssertion) withText( "Chloé" ) );
+
         //perform click on Favorite button
         onView( withId( R.id.floatingFavoriteButton ) ).perform( click() );
-        //tester le changement d'image du floatingbutton
-
+        //Check if string profile_name of item at position 2 = Chloé
+        onView(withId(R.id.profile_name)).check( matches( withText( R.string.profilename_to_check ) ));
         //perform click on back button
         onView( withId( R.id.Up ) ).perform( click() );
-        //tester le changement d'image du deletebutton
 
-
-        //onView(ViewMatchers.withId(R.id.tabItem2)).perform(click());
         // the number of element in favorite is 1 // toutes les vues du viewpager sont chargées
         onView(withContentDescription("Favorites")).perform( click() );
         onView( withId( R.id.favorite_neighbours ) ).check( withItemCount( 1 ) );
