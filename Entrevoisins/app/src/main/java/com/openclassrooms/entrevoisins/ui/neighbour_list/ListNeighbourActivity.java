@@ -34,7 +34,9 @@ public class ListNeighbourActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         mPagerAdapter = new ListNeighbourPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mPagerAdapter);
+        //Permet la syncrhonisation du tabLayout lorsqu'on swipe vers la gauche ou la droite
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+        //permet de changer de vue/fragment lorsqu'on clic sur le mTabLayout
         mTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
     }

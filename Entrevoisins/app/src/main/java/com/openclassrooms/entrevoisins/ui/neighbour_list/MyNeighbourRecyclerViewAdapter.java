@@ -50,7 +50,6 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
                 .apply(RequestOptions.circleCropTransform())
                 .into(holder.mNeighbourAvatar);
         mApiService = DI.getNeighbourApiService();
-        //changement de couleur pour l'image supprimé si favorite 
         if (neighbour.isFavorite()) {
             holder.mDeleteButton.setImageResource( R.drawable.ic_delete_gold_24dp );
         }
@@ -109,3 +108,17 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

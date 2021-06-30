@@ -22,6 +22,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class DetailsNeighbourActivity extends AppCompatActivity {
     @BindView(R.id.profile_image)
@@ -45,40 +46,28 @@ public class DetailsNeighbourActivity extends AppCompatActivity {
 
     private NeighbourApiService mApiService;
     private Boolean isNeighbourFavorite;
+    private Neighbour neighbour;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_details_neighbour );
-
         ButterKnife.bind( this );
-
         mApiService = DI.getNeighbourApiService();
-        //get intent
         Intent intent = getIntent();
-        Neighbour neighbour = intent.getParcelableExtra( "neighbour" );
-        //set view with setNeighbour(neighbour)
+        neighbour = intent.getParcelableExtra( "neighbour" );
+
         setNeighbour( neighbour );
 
         isNeighbourFavorite = neighbour.isFavorite();
         setFavoriteButton( isNeighbourFavorite );
 
-        mBackButton.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-
-            }
-        } );
-
         mFavoriteButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast toast;
-
                 if (!isNeighbourFavorite) {
-                    //quand violet = champ de classe
                     toast = Toast.makeText( getApplicationContext(), neighbour.getName() + " Favorite = YES !", Toast.LENGTH_SHORT );
                     mApiService.switchFavorite( neighbour, false );
                     isNeighbourFavorite = true;
@@ -92,39 +81,50 @@ public class DetailsNeighbourActivity extends AppCompatActivity {
             }
         } );
     }
+    @OnClick(R.id.Up)
+    public void onClickBackButton(){
+        finish();
+    }
 
     public void setNeighbour(Neighbour neighbour) {
-
         String url = neighbour.getAvatarUrl().replace("150" , "300");
         Glide.with(this)
                 .load(url)
                 .into(mImage);
-
         String profileName = neighbour.getName();
         mProfileName.setText( profileName );
         mProfileName2.setText(profileName);
-
         String place = neighbour.getAddress().replace(";" , "à");
         mPlace.setText( place );
-
         String phone = neighbour.getPhoneNumber();
         mPhone.setText( phone );
-
         String link =  neighbour.getName().toLowerCase();
         mLink.setText( "www.facebook.fr//" + link);
-
         String aboutMe = neighbour.getAboutMe();
         mAboutMe.setText( aboutMe );
     }
 
     public void setFavoriteButton(Boolean isFavorite ) {
         if (isFavorite == true) {
-
             mFavoriteButton.setImageResource( R.drawable.ic_star_gold_24dp );
-        }
-        else {
+        } else {
             mFavoriteButton.setImageResource( R.drawable.ic_star_border_white_24dp );
         }
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
