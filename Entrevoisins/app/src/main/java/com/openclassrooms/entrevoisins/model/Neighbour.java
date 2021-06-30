@@ -27,7 +27,7 @@ public class Neighbour implements Parcelable {
 
     /** About me */
     private String aboutMe;
-    /** Ajout du Boolean favorite dans le constructeur afin d'ajouter des voisins en favoris dans une liste vide de neighbour et de l'afficher par la suite grâce à notre fragment et notre ViewAdapteur */
+
     private Boolean favorite;
 
     /**

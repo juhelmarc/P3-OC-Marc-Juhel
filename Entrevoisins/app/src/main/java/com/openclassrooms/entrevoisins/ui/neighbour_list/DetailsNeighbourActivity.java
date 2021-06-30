@@ -59,7 +59,7 @@ public class DetailsNeighbourActivity extends AppCompatActivity {
         neighbour = intent.getParcelableExtra( "neighbour" );
 
         setNeighbour( neighbour );
-
+        //utiliser directement neighbour.isFavorite()
         isNeighbourFavorite = neighbour.isFavorite();
         setFavoriteButton( isNeighbourFavorite );
 
@@ -99,6 +99,7 @@ public class DetailsNeighbourActivity extends AppCompatActivity {
         String phone = neighbour.getPhoneNumber();
         mPhone.setText( phone );
         String link =  neighbour.getName().toLowerCase();
+        //enregistrer dans les string et indiquer qu'on ne peut pas la traduire  (no translation = true)
         mLink.setText( "www.facebook.fr//" + link);
         String aboutMe = neighbour.getAboutMe();
         mAboutMe.setText( aboutMe );

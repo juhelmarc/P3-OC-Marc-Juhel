@@ -113,7 +113,7 @@ public class NeighboursListTest {
 
         //perform click on Favorite button
         onView( withId( R.id.floatingFavoriteButton ) ).perform( click() );
-        //Check if string profile_name of item at position 2 = Chloé
+        //Check if string profile_name of item at position 2 = Chloé // ne pas passer par les values string mettre en dure
         onView(withId(R.id.profile_name)).check( matches( withText( R.string.profilename_to_check ) ));
         //perform click on back button
         onView( withId( R.id.Up ) ).perform( click() );
