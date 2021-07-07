@@ -79,11 +79,14 @@ public class DetailsNeighbourActivity extends AppCompatActivity {
                 setFavoriteButton( neighbour.isFavorite() );
             }
         } );
+        mBackButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        } );
     }
-    @OnClick(R.id.Up)
-    public void onClickBackButton(){
-        finish();
-    }
+
 
     public void setNeighbour(Neighbour neighbour) {
         String url = neighbour.getAvatarUrl().replace("150" , "300");
