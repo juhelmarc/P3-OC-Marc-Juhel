@@ -5,4 +5,5 @@
     <string name="activity_new_neighbour">New neighbour</string>
     <string name="profilename_to_check">Chloé</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="social_network" translatable="false">www.facebook.fr//</string>
 </resources>

@@ -113,12 +113,12 @@ public class NeighboursListTest {
 
         //perform click on Favorite button
         onView( withId( R.id.floatingFavoriteButton ) ).perform( click() );
-        //Check if string profile_name of item at position 2 = Chloé // ne pas passer par les values string mettre en dure
-        onView(withId(R.id.profile_name)).check( matches( withText( R.string.profilename_to_check ) ));
+        //Check if string profile_name of item at position 2 = Chloé
+        onView(withId(R.id.profile_name)).check( matches( withText( "Chloé" ) ));
         //perform click on back button
         onView( withId( R.id.Up ) ).perform( click() );
 
-        // the number of element in favorite is 1 // toutes les vues du viewpager sont chargées
+        // the number of element in favorite is 1
         onView(withContentDescription("Favorites")).perform( click() );
         onView( withId( R.id.favorite_neighbours ) ).check( withItemCount( 1 ) );
         onView( withContentDescription( "My neighbours" ) ).perform( click() );
@@ -132,7 +132,7 @@ public class NeighboursListTest {
         onView((withId(android.support.design.R.id.snackbar_action)))
                 .perform(click());
         onView( withId(R.id.list_neighbours)).check(withItemCount(ITEMS_COUNT-1));
-        //onView(ViewMatchers.withId(R.id.favorite_neighbours)).check(withItemCount(0));
+
         onView(withContentDescription("Favorites")).perform( click() );
         onView( withId(R.id.favorite_neighbours)).check(withItemCount(0));
     }

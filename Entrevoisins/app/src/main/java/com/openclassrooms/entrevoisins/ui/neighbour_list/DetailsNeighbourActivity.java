@@ -45,7 +45,7 @@ public class DetailsNeighbourActivity extends AppCompatActivity {
     FloatingActionButton mFavoriteButton;
 
     private NeighbourApiService mApiService;
-    private Boolean isNeighbourFavorite;
+    //private Boolean isNeighbourFavorite;
     private Neighbour neighbour;
 
 
@@ -59,25 +59,24 @@ public class DetailsNeighbourActivity extends AppCompatActivity {
         neighbour = intent.getParcelableExtra( "neighbour" );
 
         setNeighbour( neighbour );
-        //utiliser directement neighbour.isFavorite()
-        isNeighbourFavorite = neighbour.isFavorite();
-        setFavoriteButton( isNeighbourFavorite );
+
+        setFavoriteButton( neighbour.isFavorite() );
 
         mFavoriteButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast toast;
-                if (!isNeighbourFavorite) {
+                if (!neighbour.isFavorite()) {
                     toast = Toast.makeText( getApplicationContext(), neighbour.getName() + " Favorite = YES !", Toast.LENGTH_SHORT );
-                    mApiService.switchFavorite( neighbour, false );
-                    isNeighbourFavorite = true;
+                    mApiService.switchFavorite( neighbour );
+
                 } else {
                     toast = Toast.makeText( getApplicationContext(), neighbour.getName() + " Favorite = NO !", Toast.LENGTH_SHORT );
-                    mApiService.switchFavorite( neighbour, true );
-                    isNeighbourFavorite = false;
+                    mApiService.switchFavorite( neighbour );
+
                 }
                 toast.show();
-                setFavoriteButton( isNeighbourFavorite );
+                setFavoriteButton( neighbour.isFavorite() );
             }
         } );
     }
@@ -100,13 +99,13 @@ public class DetailsNeighbourActivity extends AppCompatActivity {
         mPhone.setText( phone );
         String link =  neighbour.getName().toLowerCase();
         //enregistrer dans les string et indiquer qu'on ne peut pas la traduire  (no translation = true)
-        mLink.setText( "www.facebook.fr//" + link);
+        mLink.setText( R.string.social_network + link);
         String aboutMe = neighbour.getAboutMe();
         mAboutMe.setText( aboutMe );
     }
 
     public void setFavoriteButton(Boolean isFavorite ) {
-        if (isFavorite == true) {
+        if (neighbour.isFavorite()) {
             mFavoriteButton.setImageResource( R.drawable.ic_star_gold_24dp );
         } else {
             mFavoriteButton.setImageResource( R.drawable.ic_star_border_white_24dp );
