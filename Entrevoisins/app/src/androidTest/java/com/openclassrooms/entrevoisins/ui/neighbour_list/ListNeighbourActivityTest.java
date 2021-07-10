@@ -19,9 +19,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.swipeLeft;
+import static android.support.test.espresso.action.ViewActions.swipeRight;
 import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
@@ -41,12 +45,40 @@ public class ListNeighbourActivityTest {
 
     @Test
     public void listNeighbourActivityTest() {
+        ViewInteraction floatingActionButton = onView(
+                allOf( withId( R.id.add_neighbour ),
+                        childAtPosition(
+                                allOf( withId( R.id.main_content ),
+                                        childAtPosition(
+                                                withId( android.R.id.content ),
+                                                0 ) ),
+                                2 ),
+                        isDisplayed() ) );
+        floatingActionButton.perform( click() );
+
+        ViewInteraction textInputEditText = onView(
+                allOf( withId( R.id.name ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId( R.id.nameLyt ),
+                                        0 ),
+                                0 ),
+                        isDisplayed() ) );
+        textInputEditText.perform( click() );
+
+
+        textInputEditText.perform( replaceText( "test" ), closeSoftKeyboard() );
+
+
+
+        onView(  withId( R.id.create )).perform( click() );
+
         ViewInteraction recyclerView = onView(
                 allOf( withId( R.id.list_neighbours ),
                         withParent( withId( R.id.container ) ) ) );
-        recyclerView.perform( actionOnItemAtPosition( 2, click() ) );
+        recyclerView.perform( actionOnItemAtPosition( 12, click() ) );
 
-        ViewInteraction floatingActionButton = onView(
+        ViewInteraction floatingActionButton2 = onView(
                 allOf( withId( R.id.floatingFavoriteButton ), withContentDescription( "add button" ),
                         childAtPosition(
                                 allOf( withId( R.id.constraintLayout2 ),
@@ -54,7 +86,7 @@ public class ListNeighbourActivityTest {
                                                 withId( R.id.details_activity ),
                                                 0 ) ),
                                 5 ) ) );
-        floatingActionButton.perform( scrollTo(), click() );
+        floatingActionButton2.perform( scrollTo(), click() );
 
         ViewInteraction appCompatImageView = onView(
                 allOf( withId( R.id.Up ), withContentDescription( "back button" ),
@@ -87,33 +119,18 @@ public class ListNeighbourActivityTest {
                         isDisplayed() ) );
         viewPager.perform( swipeLeft() );
 
-        ViewInteraction recyclerView2 = onView(
-                allOf( withId( R.id.list_neighbours ),
-                        withParent( withId( R.id.container ) ) ) );
-        recyclerView2.perform( actionOnItemAtPosition( 0, click() ) );
-
-        ViewInteraction appCompatImageView2 = onView(
-                allOf( withId( R.id.Up ), withContentDescription( "back button" ),
-                        childAtPosition(
-                                allOf( withId( R.id.constraintLayout2 ),
-                                        childAtPosition(
-                                                withId( R.id.details_activity ),
-                                                0 ) ),
-                                1 ) ) );
-        appCompatImageView2.perform( scrollTo(), click() );
-
         ViewInteraction appCompatImageButton = onView(
                 allOf( withId( R.id.item_list_delete_button ),
                         childAtPosition(
                                 allOf( withId( R.id.item_list ),
                                         childAtPosition(
-                                                withId( R.id.list_neighbours ),
+                                                withId( R.id.favorite_neighbours ),
                                                 0 ) ),
                                 2 ),
                         isDisplayed() ) );
         appCompatImageButton.perform( click() );
 
-        ViewInteraction materialButton = onView(
+        ViewInteraction materialButton2 = onView(
                 allOf( withId( R.id.snackbar_action ), withText( "YES" ),
                         childAtPosition(
                                 childAtPosition(
@@ -121,7 +138,28 @@ public class ListNeighbourActivityTest {
                                         0 ),
                                 1 ),
                         isDisplayed() ) );
-        materialButton.perform( click() );
+        materialButton2.perform( click() );
+
+        ViewInteraction tabView2 = onView(
+                allOf( withContentDescription( "My neighbours" ),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId( R.id.tabs ),
+                                        0 ),
+                                0 ),
+                        isDisplayed() ) );
+        tabView2.perform( click() );
+
+        ViewInteraction viewPager2 = onView(
+                allOf( withId( R.id.container ),
+                        childAtPosition(
+                                allOf( withId( R.id.main_content ),
+                                        childAtPosition(
+                                                withId( android.R.id.content ),
+                                                0 ) ),
+                                1 ),
+                        isDisplayed() ) );
+        viewPager2.perform( swipeRight() );
     }
 
     private static Matcher<View> childAtPosition(
