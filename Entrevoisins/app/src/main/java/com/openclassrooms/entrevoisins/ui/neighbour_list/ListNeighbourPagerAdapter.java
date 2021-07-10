@@ -31,7 +31,7 @@ public class ListNeighbourPagerAdapter extends FragmentPagerAdapter {
 
         switch(position) {
             case 0 :
-                return NeighbourFragment.newInstance(false); // possibilité d'ajouter un boolean en parametre de newInstance() afin de n'utiliser qu'un seul fragment et layout
+                return NeighbourFragment.newInstance(false);
             case 1 :
                 return NeighbourFragment.newInstance(true);
             default :
