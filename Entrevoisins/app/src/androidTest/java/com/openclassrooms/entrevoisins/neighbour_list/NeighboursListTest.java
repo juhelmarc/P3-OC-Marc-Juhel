@@ -120,7 +120,7 @@ public class NeighboursListTest {
 
         // the number of element in favorite is 1
         onView(withContentDescription("Favorites")).perform( click() );
-        onView( withId( R.id.favorite_neighbours ) ).check( withItemCount( 1 ) );
+        onView( withId( R.id.list_neighbours ) ).check( withItemCount( 1 ) );
         onView( withContentDescription( "My neighbours" ) ).perform( click() );
 
         //perform click on deletebutton to neighbour in position 3
@@ -134,7 +134,7 @@ public class NeighboursListTest {
         onView( withId(R.id.list_neighbours)).check(withItemCount(ITEMS_COUNT-1));
 
         onView(withContentDescription("Favorites")).perform( click() );
-        onView( withId(R.id.favorite_neighbours)).check(withItemCount(0));
+        onView( withId(R.id.list_neighbours)).check(withItemCount(0));
     }
     @Test
     public void createNeighbour() {
